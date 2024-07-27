@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的个人主页</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        body {
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            overflow-y: auto;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            position: relative;
+            background: linear-gradient(to bottom right, #2e3d49, #16202a);
+        }
+        .background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 10px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            width: 90%;
+            max-width: 600px;
+        }
+        .progress-bar {
+            background: linear-gradient(90deg, #ff6a00 0%, #ee0979 100%);
+            height: 10px;
+            border-radius: 5px;
+            transition: width 1s ease-in-out;
+        }
+        .avatar-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 5px solid #fff;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: rotate 10s linear infinite;
+        }
+        .avatar {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.3s ease-in-out;
+        }
+        .avatar:hover {
+            transform: scale(1.1);
+        }
+        .avatar-container:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 50%;
+            box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.5);
+            animation: pulse 2s infinite;
+        }
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.3);
+            }
+            100% {
+                box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.5);
+            }
+        }
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+            padding-top: 120px;
+        }
+        .skill-card {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+            margin-bottom: 10px;
+            animation: fadeInUp 1s ease-in-out;
+        }
+        @keyframes fadeInUp {
+            0% {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            background: white;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            opacity: 0.7;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) translateX(-10vw);
+                opacity: 0;
+            }
+        }
+        .icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .icons i, .icons img {
+            width: 24px;
+            height: 24px;
+            color: #fff;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+        .icons i:hover, .icons img:hover {
+            opacity: 1;
+        }
+        .about-section {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 10px;
+            cursor: pointer;
+        }
+        .time-display {
+            font-size: 18px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .search-box {
+        position: relative;
+        margin-top: 10px;
+        width: 80%;
+        max-width: 500px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 25px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        animation: fadeInDown 1s ease-in-out;
+    }
+    .search-input {
+        width: calc(100% - 60px);
+        padding: 10px 20px;
+        border: none;
+        background: transparent;
+        color: white;
+        font-size: 16px;
+        outline: none;
+        float: left;
+        border-radius: 25px;
+    }
+    .search-button {
+        width: 60px;
+        height: 100%;
+        background: rgba(255, 106, 0, 0.5);
+        color: white;
+        border: none;
+        cursor: pointer;
+        float: right;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.3s;
+        border-radius: 0 25px 25px 0;
+    }
+    .search-button:hover {
+        background: rgba(238, 9, 121, 0.5);
+    }
+    </style>
+</head>
+<body>
+    <!-- 背景视频 -->
+    <video class="background-video" autoplay loop muted>
+        <source src="mylivewallpapers-com-Firefly-Honkai-Star-Rail-4K.mp4" type="video/mp4">
+        您的浏览器不支持视频标签。
+    </video>
+    
+    <!-- 雪花效果 -->
+    <div id="snowflakes"></div>
+    
+    <div class="container mx-auto center-content">
+        <!-- 时间显示 -->
+        <div class="time-display" id="timeDisplay"></div>
+        
+        <!-- 搜索框 -->
+        <div class="search-box">
+            <form action="https://www.bing.com/search" method="get" target="_blank">
+                <input type="text" name="q" class="search-input" placeholder="Search with Bing...">
+                <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
+            </form>
+        </div>
+        
+        <!-- 头像展示 -->
+        <div class="avatar-container mb-4">
+            <img src="file-7XuqvrK8t6R1TX3flEQXBwgx.jpg" alt="头像" class="avatar">
+        </div>
+        
+        <!-- 图标按钮 -->
+        <div class="icons">
+            <a href="https://github.com" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://qq.com" target="_blank"><i class="fab fa-qq"></i></a>
+            <a href="https://www.bilibili.com" target="_blank"><img src="https://www.svgrepo.com/show/345504/bilibili.svg" alt="Bilibili"></a>
+            <a href="https://youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
+            <a href="https://store.steampowered.com" target="_blank<i class="fab fa-steam"></i></a>
+            <a href="https://chat.openai.com" target="_blank"><i class="fab fa-rocketchat"></i></a>
+        </div>
+        
+        <!-- 技能卡片 -->
+        <div class="glass-effect card mt-4">
+            <h2 class="text-lg font-bold">技能点数</h2>
+            <div class="skill-card mt-2">
+                <p>JavaScript/TypeScript</p>
+                <div class="w-full bg-gray-300 rounded-full mt-1">
+                    <div class="progress-bar" style="width: 90%;"></div>
+                </div>
+            </div>
+            <div class="skill-card mt-2">
+                <p>React</p>
+                <div class="w-full bg-gray-300 rounded-full mt-1">
+                    <div class="progress-bar" style="width: 70%;"></div>
+                </div>
+            </div>
+            <div class="skill-card mt-2">
+                <p>Vue</p>
+                <div class="w-full bg-gray-300 rounded-full mt-1">
+                    <div class="progress-bar" style="width: 75%;"></div>
+                </div>
+            </div>
+            <div class="skill-card mt-2">
+                <p>Angular</p>
+                <div class="w-full bg-gray-300 rounded-full mt-1">
+                    <div class="progress-bar" style="width: 60%;"></div>
+                </div>
+            </div>
+            <div class="skill-card mt-2">
+                <p>Node.js</p>
+                <div class="w-full bg-gray-300 rounded-full mt-1">
+                    <div class="progress-bar" style="width: 85%;"></div>
+                </div>
+            </div>
+            <div class="skill-card mt-2">
+                <p>Express</p>
+                <div class="w-full bg-gray-300 rounded-full mt-1">
+                    <div class="progress-bar" style="width: 70%;"></div>
+                </div>
+            </div>
+            <div class="skill-card mt-2">
+                <p>Next.js</p>
+                <div class="w-full bg-gray-300 rounded-full mt-1">
+                    <div class="progress-bar" style="width: 65%;"></div>
+                </div>
+            </div>
+            <div class="skill-card mt-2">
+                <p>Nuxt.js</p>
+                <div class="w-full bg-gray-300 rounded-full mt-1">
+                    <div class="progress-bar" style="width: 50%;"></div>
+                </div>
+            </div>
+            <div class="skill-card mt-2">
+                <p>Three.js</p>
+                <div class="w-full bg-gray-300 rounded-full mt-1">
+                    <div class="progress-bar" style="width: 40%;"></div>
+                </div>
+            </div>
+            <div class="skill-card mt-2">
+                <p>Docker</p>
+                <div class="w-full bg-gray-300 rounded-full mt-1">
+                    <div class="progress-bar" style="width: 50%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 心得卡片 -->
+        <div class="glass-effect card mt-6 about-section" id="aboutCard">
+            <div class="p-4" id="aboutContent">
+                <h2 class="text-lg font-bold">关于这个网页</h2>
+                <p class="mt-2">这是一个展示前端开发技能和心得的网页，包含了关于前端开发的各种心得和好用的库，帮助开发者更好地理解和使用这些技术。</p>
+                <h2 class="text-lg font-bold mt-4">心得文章</h2>
+                <p class="mt-2">在前端开发中，保持代码简洁和模块化是非常重要的。使用像React和Vue这样的框架可以帮助你组织代码并提高可维护性。同时，学习使用CSS预处理器如Sass和Less，可以让你的CSS更具结构性和可读性。</p>
+                <h2 class="text-lg font-bold mt-4">优秀内容推荐</h2>
+                <ul class="list-disc ml-5 mt-2">
+                    <li><a href="https://developer.mozilla.org" target="_blank" class="text-blue-400">MDN Web Docs</a> - 权威的Web开发资源</li>
+                    <li><a href="https://css-tricks.com" target="_blank" class="text-blue-400">CSS-Tricks</a> - 实用的CSS技巧和教程</li>
+                    <li><a href="https://frontendmasters.com" target="_blank" class="text-blue-400">Frontend Masters</a> - 高质量的前端课程</li>
+                    <li><a href="https://stackoverflow.com" target="_blank" class="text-blue-400">Stack Overflow</a> - 开发者问答社区</li>
+                    <li><a href="https://github.com" target="_blank" class="text-blue-400">GitHub</a> - 开源项目和代码托管平台</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 雪花效果
+        function createSnowflakes() {
+            const snowflakesContainer = document.getElementById('snowflakes');
+            for (let i = 0; i < 100; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                snowflake.style.left = `${Math.random() * 100}vw`;
+                snowflake.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                snowflake.style.opacity = Math.random();
+                snowflake.style.transform = `scale(${Math.random()})`;
+                snowflakesContainer.appendChild(snowflake);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', createSnowflakes);
+
+        // 自动循环播放音乐
+        const audio = new Audio('Adventure_Time-G_Sounds-294315845-320.wav');
+        audio.volume = 0.45;
+        audio.loop = true;
+        audio.play();
+
+        // 显示时间
+        function updateTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('timeDisplay').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+</body>
+</html>
